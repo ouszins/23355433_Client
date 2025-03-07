@@ -8,7 +8,7 @@ public class TCPClient_23355433 {
     BufferedReader in;
     PrintWriter out;
 
-    private String run() {
+    String run() {
 
         Socket link = null;
         try
