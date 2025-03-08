@@ -22,7 +22,9 @@ import java.util.Objects;
 public class App extends Application {
     private Stage stage;
     private GridPane scheduleGrid;
-    private String[] weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+    private String[] weekdays = {" Monday", " Tuesday", "Wednesday", " Thursday", "  Friday"};
+    private String[] moduleTime = {"9:00", "10:00", "11:00", "12:00", "13:00"};
+
     final int minWidth = 800;
     final int minHeight = 600;
     public String moduleString;
@@ -188,28 +190,48 @@ public class App extends Application {
         date.setPromptText("Select Date");
 
         //creating schedule fields for the 5 working days, Mon-Fri
+
+        // ---------------------------------- WEEKDAYS ----------------------------------------
         final GridPane scheduleGrid = new GridPane();
         scheduleGrid.getChildren().clear();
 
-        scheduleGrid.setHgap(20);
-        scheduleGrid.setVgap(10);
+        scheduleGrid.setHgap(15);
+        scheduleGrid.setVgap(5);
 
+        //loop for inserting the weekdays
         for (int col = 0; col < weekdays.length; col++) {
             Label weekday = new Label(weekdays[col]);
-            weekday.setFont(Font.font("comic sans ms", FontWeight.EXTRA_BOLD, 19));
+            weekday.setFont(Font.font("comic sans ms", FontWeight.BOLD, 17));
+            weekday.setPadding(new Insets(0,0,10,5));
+            weekday.setMaxWidth(200);
             scheduleGrid.add(weekday, col + 1, 0);
         }
 
-        TextArea scheduleField1 = new TextArea("");
-        scheduleField1.setEditable(false);
-        scheduleField1.setMinSize(100,100);
-        scheduleField1.setMaxSize(100,100);
+        TextArea modules = null;
+        for (int row = 0; row < moduleTime.length; row++) {
+            Label times = new Label(moduleTime[row]);
+            times.setStyle("-fx-font-size: 15");
+            times.setRotate(90);
+            scheduleGrid.add(times, 0, row + 1);
 
+            //loop for inserting the actual module boxes
+            for (int col = 0; col < weekdays.length; col++) {
+                modules = new TextArea();
+                modules.setEditable(false);
+                modules.setMinSize(100, 100);
+                modules.setMaxSize(100, 100);
+                scheduleGrid.add(modules, col + 1, row + 1);
+            }
+        }
 
         Label result = new Label("");
 
+        //Buttons
         Button viewBtn = new Button("View Schedule");
         Button homeBtn = new Button("Home");
+
+        //Use in buttons
+        //viewBtn.setOnAction(e -> refreshes the schedule with the added modules);
         homeBtn.setOnAction(e -> stage.setScene(homeMenu()));
 
 // ----------------------- LAYOUT -----------------------
@@ -221,13 +243,13 @@ public class App extends Application {
         col2.setSpacing(2);
 
         HBox columns = new HBox(col1, col2);
-        columns.setSpacing(5);
-        columns.setPadding(new Insets(5,5,5,5));
+        columns.setSpacing(10);
+        columns.setPadding(new Insets(5, 5, 5, 5));
 
         spacer.prefHeight(5);
-        scheduleGrid.setStyle("-fx-background-color: #6b9e6b");
+        scheduleGrid.setStyle("-fx-background-color: #658e65");
         HBox schedGrid = new HBox(scheduleGrid);
-        VBox schedDisplay = new VBox(schedGrid, new Label(""), scheduleField1);
+        VBox schedDisplay = new VBox(schedGrid);
         schedDisplay.setAlignment(Pos.TOP_RIGHT);
         schedDisplay.setStyle("-fx-background-color: #ccdfd7");
 
@@ -235,16 +257,14 @@ public class App extends Application {
         layout.setAlignment(Pos.CENTER_LEFT);
 
         //padding so that the layout of these aren't off
-        scheduleGrid.setPadding(new Insets(5,8,5,0));
-        layout.setPadding(new Insets(5,5,5,5));
+        scheduleGrid.setPadding(new Insets(5, 10, 50, 10));
+        layout.setPadding(new Insets(5, 5, 5, 5));
 
-        Label empty = new Label(" ");
         HBox sides = new HBox(layout, schedDisplay);
-        sides.setStyle("-fx-background-color: #ccdfd7;");
-        layout.setStyle("-fx-background-color: #547754");
+        sides.setStyle("-fx-background-color: #658e65;");
+        layout.setStyle("-fx-background-color: #cbded6");
 
-
-        return new Scene(sides, minWidth, minHeight);
+        return new Scene(sides, 950, 600);
     }
 
     //launcher
