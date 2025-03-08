@@ -7,8 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -25,6 +24,7 @@ public class App extends Application {
     final int minHeight = 600;
     public String moduleString;
     public String dateString;
+    Region spacer = new Region();
 
     @Override
     public void start(Stage primaryStage) {
@@ -61,14 +61,17 @@ public class App extends Application {
         scheduleView.setOnAction(e -> {stage.setScene(viewSchedule());});
         exitButton.setOnAction(e -> Platform.exit());
 
-        HBox homeLayout = new HBox(new VBox(header, new Label(""), subtitle, classDir, scheduleView, exitButton));
+        spacer.setPrefHeight(150);
+        HBox homeLayout = new HBox(new VBox(spacer, header, new Label(""), subtitle, new Label(""), classDir, scheduleView, exitButton));
         homeLayout.setAlignment(Pos.CENTER);
         homeLayout.setSpacing(10);
         homeLayout.setStyle("-fx-background-color: #dceae2");
         homeLayout.setMinSize(500,500);
+        homeLayout.setMaxHeight(300);
+        homeLayout.setMaxWidth(800);
 
         //return changes
-        return new Scene(homeLayout, minHeight, minWidth);
+        return new Scene(homeLayout, 800, 300);
     }
 
     private Scene manageClasses(){
@@ -80,9 +83,7 @@ public class App extends Application {
         Label popText = new Label("");
         popText.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
-        VBox popBox = new VBox(
-                popText
-        );
+        VBox popBox = new VBox(popText);
         popBox.setStyle("-fx-background-color: #ceded4; -fx-padding: 10px; -fx-border-color: #637163; -fx-border-width: 2px;");
 
         popup.getContent().add(popBox);
@@ -145,46 +146,25 @@ public class App extends Application {
         Button homeBtn = new Button("Home");
         homeBtn.setOnAction(e -> stage.setScene(homeMenu()));
 
-        VBox col1 = new VBox(
-                new Label("Module Code:"),
-                new Label("Room:"),
-                new Label("Date:"),
-                new Label("Time:"),
-                new Label("")
-        );
+        VBox col1 = new VBox(new Label("Module Code:"), new Label("Room:"), new Label("Date:"), new Label("Time:"), new Label(""));
         col1.setSpacing(10);
 
-        VBox col2 = new VBox(
-                module,
-                room,
-                date,
-                time
-        );
+        VBox col2 = new VBox(module, room, date, time);
         col2.setSpacing(2);
 
-        HBox columns = new HBox(
-                col1,
-                col2
-        );
+        HBox columns = new HBox(col1, col2);
         columns.setSpacing(5);
+        columns.setAlignment(Pos.CENTER);
 
-        HBox buttons = new HBox(
-                addClass,
-                remClass
-        );
+        HBox buttons = new HBox( addClass, remClass);
         buttons.setSpacing(10);
+        buttons.setAlignment(Pos.CENTER);
 
-        VBox layout = new VBox(
-                header,
-                new Label(""),
-                columns,
-                buttons,
-                new Label(""),
-                homeBtn
-        );
-        layout.setAlignment(Pos.CENTER_LEFT);
+        spacer.prefWidth(150);
+        VBox layout = new VBox(header, new Label(""), columns, buttons, new Label(""), homeBtn);
+        layout.setAlignment(Pos.CENTER);
 
-        layout.setAlignment(Pos.CENTER_LEFT);
+        layout.setAlignment(Pos.CENTER);
 
         layout.setStyle("-fx-background-color: #dceae2");
         layout.setMinSize(500,500);
@@ -218,44 +198,22 @@ public class App extends Application {
 
 // ----------------------- LAYOUT -----------------------
 
-        VBox col1 = new VBox(
-                new Label("Module Code:"),
-                new Label("Date:"),
-                new Label("")
-        );
+        VBox col1 = new VBox(new Label("Module Code:"), new Label("Date:"), new Label(""));
         col1.setSpacing(10);
 
-        VBox col2 = new VBox(
-                module,
-                date
-        );
+        VBox col2 = new VBox(module, date);
         col2.setSpacing(2);
 
-        HBox columns = new HBox(
-                col1,
-                col2
-        );
+        HBox columns = new HBox(col1, col2);
         columns.setSpacing(5);
 
-        VBox schedDisplay = new VBox(
-                scheduleField
-        );
+        VBox schedDisplay = new VBox(scheduleField);
         schedDisplay.setAlignment(Pos.CENTER_RIGHT);
 
-        VBox layout = new VBox(
-                header,
-                new Label(""),
-                columns,
-                result,
-                new Label(""),
-                homeBtn
-        );
+        VBox layout = new VBox(header, new Label(""), columns, result, new Label(""), homeBtn);
         layout.setAlignment(Pos.CENTER_LEFT);
 
-        HBox sides = new HBox(
-                layout,
-                schedDisplay
-        );
+        HBox sides = new HBox(layout, schedDisplay);
         sides.setSpacing(10);
         layout.setStyle("-fx-background-color: #dceae2");
         return new Scene(sides, minWidth, minHeight);
