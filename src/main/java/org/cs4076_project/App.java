@@ -184,12 +184,37 @@ public class App extends Application {
         date.setMinWidth(200);
         date.setPromptText("Select Date");
 
-        TextArea scheduleField = new TextArea("");
-        scheduleField.setEditable(false);
-        scheduleField.setMaxWidth(400);
-        scheduleField.setMinWidth(400);
-        scheduleField.setMaxHeight(400);
-        scheduleField.setMinHeight(400);
+        //creating schedule fields for the 5 working days, Mon-Fri
+        final GridPane scheduleGrid = new GridPane();
+
+        scheduleGrid.setHgap(20);
+        scheduleGrid.setVgap(10);
+
+        Label mon = new Label("Monday");
+        Label tue = new Label("Tuesday");
+        Label wed = new Label("Wednesday");
+        Label thu = new Label("Thursday");
+        Label fri = new Label("Friday");
+
+        //------- FONTS -----------
+        mon.setFont(Font.font("comic sans ms", FontWeight.BOLD, 20));
+        tue.setFont(Font.font("comic sans ms", FontWeight.BOLD, 20));
+        wed.setFont(Font.font("comic sans ms", FontWeight.BOLD, 20));
+        thu.setFont(Font.font("comic sans ms", FontWeight.BOLD, 20));
+        fri.setFont(Font.font("comic sans ms", FontWeight.BOLD, 20));
+
+        //adding the labels to a grid
+        scheduleGrid.add(mon, 0, 0);
+        scheduleGrid.add(tue, 1, 0);
+        scheduleGrid.add(wed, 2, 0);
+        scheduleGrid.add(thu, 3, 0);
+        scheduleGrid.add(fri, 4, 0);
+
+        TextArea scheduleField1 = new TextArea("");
+        scheduleField1.setEditable(false);
+        scheduleField1.setMinSize(100,100);
+        scheduleField1.setMaxSize(100,100);
+
 
         Label result = new Label("");
 
@@ -207,15 +232,21 @@ public class App extends Application {
         HBox columns = new HBox(col1, col2);
         columns.setSpacing(5);
 
-        VBox schedDisplay = new VBox(scheduleField);
-        schedDisplay.setAlignment(Pos.CENTER_RIGHT);
+        spacer.prefHeight(10);
+        scheduleGrid.setStyle("-fx-background-color: #628c62");
+        HBox schedGrid = new HBox(scheduleGrid);
+        VBox schedDisplay = new VBox(schedGrid, spacer, scheduleField1);
+        schedDisplay.setAlignment(Pos.TOP_RIGHT);
+        schedDisplay.setStyle("-fx-background-color: #ccdfd7");
 
         VBox layout = new VBox(header, new Label(""), columns, result, new Label(""), homeBtn);
         layout.setAlignment(Pos.CENTER_LEFT);
 
         HBox sides = new HBox(layout, schedDisplay);
         sides.setSpacing(10);
-        layout.setStyle("-fx-background-color: #dceae2");
+        sides.setStyle("-fx-background-color: #ccdfd7;");
+        layout.setStyle("-fx-background-color: #819381");
+
         return new Scene(sides, minWidth, minHeight);
     }
 
