@@ -181,13 +181,10 @@ public class App extends Application {
         Label header = new Label("View Schedule");
         header.setFont(Font.font("comic sans ms", FontWeight.EXTRA_BOLD, 20));
 
-        DatePicker date = new DatePicker();
         TextField module = new TextField();
 
         module.setMinWidth(200);
         module.setPromptText("e.g., CSXXXX");
-        date.setMinWidth(200);
-        date.setPromptText("Select Date");
 
         //creating schedule fields for the 5 working days, Mon-Fri
 
@@ -236,15 +233,15 @@ public class App extends Application {
 
 // ----------------------- LAYOUT -----------------------
 
-        VBox col1 = new VBox(new Label("Module Code:"), new Label("Date:"), new Label(""));
-        col1.setSpacing(10);
+        VBox col1 = new VBox(new Label("Module Code:"), new Label(""));
+        col1.setSpacing(5);
 
-        VBox col2 = new VBox(module, date);
+        VBox col2 = new VBox(module);
         col2.setSpacing(2);
 
         HBox columns = new HBox(col1, col2);
         columns.setSpacing(10);
-        columns.setPadding(new Insets(5, 5, 5, 5));
+        columns.setPadding(new Insets(0, 5, 0, 5));
 
         spacer.prefHeight(5);
         scheduleGrid.setStyle("-fx-background-color: #658e65");
