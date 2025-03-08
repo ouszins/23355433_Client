@@ -131,9 +131,9 @@ public class App extends Application {
             }
         });
 
-        Button remClass = new Button("Remove Class");
-        remClass.setMinWidth(100);
-        remClass.setOnAction(e -> {
+        Button removeClass = new Button("Remove Class");
+        removeClass.setMinWidth(100);
+        removeClass.setOnAction(e -> {
             TCPClient_23355433 tcp = new TCPClient_23355433();
             String m = tcp.run();
             String input = module.getText() + "_" + room.getText() + "_" + date.getValue().toString() + "_" + time.getValue();
@@ -159,7 +159,7 @@ public class App extends Application {
         columns.setSpacing(5);
         columns.setAlignment(Pos.CENTER);
 
-        HBox buttons = new HBox( addClass, remClass);
+        HBox buttons = new HBox( addClass, removeClass);
         buttons.setSpacing(10);
         buttons.setAlignment(Pos.CENTER);
 
@@ -225,13 +225,13 @@ public class App extends Application {
         columns.setPadding(new Insets(5,5,5,5));
 
         spacer.prefHeight(5);
-        scheduleGrid.setStyle("-fx-background-color: #628c62");
+        scheduleGrid.setStyle("-fx-background-color: #6b9e6b");
         HBox schedGrid = new HBox(scheduleGrid);
         VBox schedDisplay = new VBox(schedGrid, new Label(""), scheduleField1);
         schedDisplay.setAlignment(Pos.TOP_RIGHT);
         schedDisplay.setStyle("-fx-background-color: #ccdfd7");
 
-        VBox layout = new VBox(header, new Label(""), columns, result, new Label(""), viewBtn, homeBtn);
+        VBox layout = new VBox(header, new Label(""), columns, result, viewBtn, new Label(""), homeBtn);
         layout.setAlignment(Pos.CENTER_LEFT);
 
         //padding so that the layout of these aren't off
@@ -241,8 +241,7 @@ public class App extends Application {
         Label empty = new Label(" ");
         HBox sides = new HBox(layout, schedDisplay);
         sides.setStyle("-fx-background-color: #ccdfd7;");
-        layout.setStyle("-fx-border-color: #819381; -fx-border-width: 10");
-        layout.setStyle("-fx-background-color: #819381");
+        layout.setStyle("-fx-background-color: #547754");
 
 
         return new Scene(sides, minWidth, minHeight);
