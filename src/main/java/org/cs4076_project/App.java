@@ -48,8 +48,9 @@ public class App extends Application {
         Button scheduleView = new Button("View Schedule");
         Button exitButton = new Button("Exit");
 
-        header.setFont(Font.font("Comic_Sans", FontWeight.EXTRA_BOLD, 30));
-        subtitle.setFont(Font.font("Comic_Sans", FontWeight.BOLD, 10));
+        header.setFont(Font.font("comic sans ms", FontWeight.EXTRA_BOLD, 30));
+        subtitle.setFont(Font.font("comic sans ms", FontWeight.BOLD, 10));
+        header.setTextFill(Color.web("#0B3E2CFF"));
         subtitle.setTextFill(Color.web("#92a69b"));
 
         classDir.setMinWidth(200);
@@ -61,7 +62,7 @@ public class App extends Application {
         exitButton.setOnAction(e -> Platform.exit());
 
         HBox homeLayout = new HBox(new VBox(header, new Label(""), subtitle, classDir, scheduleView, exitButton));
-        homeLayout.setAlignment(Pos.CENTER_LEFT);
+        homeLayout.setAlignment(Pos.CENTER);
         homeLayout.setSpacing(10);
         homeLayout.setStyle("-fx-background-color: #dceae2");
         homeLayout.setMinSize(500,500);
@@ -93,7 +94,7 @@ public class App extends Application {
 // ----------------------- SCENE -----------------------
 
         Label header = new Label("Manage Classes");
-        header.setFont(Font.font("Comic_Sans", FontWeight.EXTRA_BOLD, 20));
+        header.setFont(Font.font("comic sans ms", FontWeight.EXTRA_BOLD, 20));
 
         TextField module = new TextField();
         TextField room = new TextField();
@@ -193,7 +194,7 @@ public class App extends Application {
     private Scene viewSchedule() {
 
         Label header = new Label("View Schedule");
-        header.setFont(Font.font("Comic_Sans", FontWeight.EXTRA_BOLD, 20));
+        header.setFont(Font.font("comic sans ms", FontWeight.EXTRA_BOLD, 20));
 
         DatePicker date = new DatePicker();
         TextField module = new TextField();
