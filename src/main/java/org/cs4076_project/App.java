@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -20,6 +21,8 @@ import java.util.Objects;
 
 public class App extends Application {
     private Stage stage;
+    private GridPane scheduleGrid;
+    private String[] weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
     final int minWidth = 800;
     final int minHeight = 600;
     public String moduleString;
@@ -186,29 +189,16 @@ public class App extends Application {
 
         //creating schedule fields for the 5 working days, Mon-Fri
         final GridPane scheduleGrid = new GridPane();
+        scheduleGrid.getChildren().clear();
 
         scheduleGrid.setHgap(20);
         scheduleGrid.setVgap(10);
 
-        Label mon = new Label("Monday");
-        Label tue = new Label("Tuesday");
-        Label wed = new Label("Wednesday");
-        Label thu = new Label("Thursday");
-        Label fri = new Label("Friday");
-
-        //------- FONTS -----------
-        mon.setFont(Font.font("comic sans ms", FontWeight.BOLD, 20));
-        tue.setFont(Font.font("comic sans ms", FontWeight.BOLD, 20));
-        wed.setFont(Font.font("comic sans ms", FontWeight.BOLD, 20));
-        thu.setFont(Font.font("comic sans ms", FontWeight.BOLD, 20));
-        fri.setFont(Font.font("comic sans ms", FontWeight.BOLD, 20));
-
-        //adding the labels to a grid
-        scheduleGrid.add(mon, 0, 0);
-        scheduleGrid.add(tue, 1, 0);
-        scheduleGrid.add(wed, 2, 0);
-        scheduleGrid.add(thu, 3, 0);
-        scheduleGrid.add(fri, 4, 0);
+        for (int col = 0; col < weekdays.length; col++) {
+            Label weekday = new Label(weekdays[col]);
+            weekday.setFont(Font.font("comic sans ms", FontWeight.EXTRA_BOLD, 19));
+            scheduleGrid.add(weekday, col + 1, 0);
+        }
 
         TextArea scheduleField1 = new TextArea("");
         scheduleField1.setEditable(false);
@@ -218,6 +208,7 @@ public class App extends Application {
 
         Label result = new Label("");
 
+        Button viewBtn = new Button("View Schedule");
         Button homeBtn = new Button("Home");
         homeBtn.setOnAction(e -> stage.setScene(homeMenu()));
 
@@ -231,21 +222,28 @@ public class App extends Application {
 
         HBox columns = new HBox(col1, col2);
         columns.setSpacing(5);
+        columns.setPadding(new Insets(5,5,5,5));
 
-        spacer.prefHeight(10);
+        spacer.prefHeight(5);
         scheduleGrid.setStyle("-fx-background-color: #628c62");
         HBox schedGrid = new HBox(scheduleGrid);
-        VBox schedDisplay = new VBox(schedGrid, spacer, scheduleField1);
+        VBox schedDisplay = new VBox(schedGrid, new Label(""), scheduleField1);
         schedDisplay.setAlignment(Pos.TOP_RIGHT);
         schedDisplay.setStyle("-fx-background-color: #ccdfd7");
 
-        VBox layout = new VBox(header, new Label(""), columns, result, new Label(""), homeBtn);
+        VBox layout = new VBox(header, new Label(""), columns, result, new Label(""), viewBtn, homeBtn);
         layout.setAlignment(Pos.CENTER_LEFT);
 
+        //padding so that the layout of these aren't off
+        scheduleGrid.setPadding(new Insets(5,8,5,0));
+        layout.setPadding(new Insets(5,5,5,5));
+
+        Label empty = new Label(" ");
         HBox sides = new HBox(layout, schedDisplay);
-        sides.setSpacing(10);
         sides.setStyle("-fx-background-color: #ccdfd7;");
+        layout.setStyle("-fx-border-color: #819381; -fx-border-width: 10");
         layout.setStyle("-fx-background-color: #819381");
+
 
         return new Scene(sides, minWidth, minHeight);
     }
