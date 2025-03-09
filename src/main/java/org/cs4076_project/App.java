@@ -243,34 +243,34 @@ public class App extends Application {
 
     for (String lecture : lectures) {
         String[] details = lecture.split("_");
-        if (details.length != 4) continue; // Ignore invalid data
+       
 
         String moduleCode = details[0];
         String room = details[1];
         String fdate = details[2];
         String time = details[3];
 
-        // Find correct column (weekday)
+       
         int colIndex = -1;
         String[] dateParts = fdate.split("-");
         String date= dateParts[2];
         for (int i = 0; i < weekdays.length; i++) {
             if (date.contains(weekdays[i].trim())) {
-                colIndex = i + 1; // +1 to skip the time column
+                colIndex = i + 1; 
                 break;
             }
         }
 
-        // Find correct row (time)
+      
         int rowIndex = -1;
         for (int i = 0; i < moduleTime.length; i++) {
             if (moduleTime[i].equals(time)) {
-                rowIndex = i + 1; // +1 to skip header
+                rowIndex = i + 1; 
                 break;
             }
         }
 
-        // If valid column and row found, place the lecture
+       
         if (colIndex != -1 && rowIndex != -1) {
             TextArea cell = new TextArea(moduleCode + "\n" + room);
             cell.setEditable(false);
