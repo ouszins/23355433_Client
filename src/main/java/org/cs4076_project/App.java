@@ -122,30 +122,25 @@ public class App extends Application {
         addClass.setMinWidth(100);
         addClass.setOnAction(e -> {
             TCPClient_23355433 tcp = new TCPClient_23355433();
-            String m = tcp.run();
+            tcp.run();
             String input = module.getText() + "_" + room.getText() + "_" + date.getValue().toString() + "_" + time.getValue();
-            if (!Objects.equals(m, "OK")) {
-                popText.setText(m);
-                popup.show(stage);
-            } else {
+
                 popText.setText(tcp.send("ADD_" + input));
                 popup.show(stage);
-            }
+                tcp.close();
+            
         });
 
         Button removeClass = new Button("Remove Class");
         removeClass.setMinWidth(100);
         removeClass.setOnAction(e -> {
             TCPClient_23355433 tcp = new TCPClient_23355433();
-            String m = tcp.run();
+            tcp.run();
             String input = module.getText() + "_" + room.getText() + "_" + date.getValue().toString() + "_" + time.getValue();
-            if (!Objects.equals(m, "OK")) {
-                popText.setText(m);
-                popup.show(stage);
-            } else {
+            
                 popText.setText(tcp.send("REMOVE_" + input));
                 popup.show(stage);
-            }
+                tcp.close();
         });
 
         Button homeBtn = new Button("Home");
@@ -230,6 +225,10 @@ public class App extends Application {
         //Use in buttons
         TextArea finalModules = modules;
         viewBtn.setOnAction(e ->{
+        TCPClient_23355433 tcp = new TCPClient_23355433();
+        tcp.run();
+        String response = tcp.send("VIEW_"+module.getText());
+        tcp.close();
         String content = finalModules.getText(); // Get the content of the TextArea
         finalModules.setText("Lecture: " + result); // Set the label text to the content
         });
