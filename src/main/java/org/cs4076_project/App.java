@@ -228,7 +228,11 @@ public class App extends Application {
         Button homeBtn = new Button("Home");
 
         //Use in buttons
-        //viewBtn.setOnAction(e -> refreshes the schedule with the added modules);
+        TextArea finalModules = modules;
+        viewBtn.setOnAction(e ->{
+        String content = finalModules.getText(); // Get the content of the TextArea
+        finalModules.setText("Lecture: " + result); // Set the label text to the content
+        });
         homeBtn.setOnAction(e -> stage.setScene(homeMenu()));
 
 // ----------------------- LAYOUT -----------------------
