@@ -1,23 +1,21 @@
 package org.cs4076_project;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.*;
-import javafx.scene.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 
 public class App extends Application {
     private Stage stage;
@@ -126,8 +124,9 @@ public class App extends Application {
             String input = module.getText() + "_" + room.getText() + "_" + date.getValue().toString() + "_" + time.getValue();
 
                 popText.setText(tcp.send("ADD_" + input));
-                popup.show(stage);
                 tcp.close();
+                popup.show(stage);
+                
             
         });
 
@@ -139,8 +138,8 @@ public class App extends Application {
             String input = module.getText() + "_" + room.getText() + "_" + date.getValue().toString() + "_" + time.getValue();
             
                 popText.setText(tcp.send("REMOVE_" + input));
-                popup.show(stage);
                 tcp.close();
+                popup.show(stage);
         });
 
         Button homeBtn = new Button("Home");
@@ -160,7 +159,7 @@ public class App extends Application {
         buttons.setSpacing(10);
         buttons.setAlignment(Pos.CENTER);
 
-        spacer.prefWidth(150);
+        spacer.setPrefWidth(150);
         VBox layout = new VBox(header, new Label(""), columns, buttons, new Label(""), homeBtn);
         layout.setAlignment(Pos.CENTER);
 
@@ -225,13 +224,62 @@ public class App extends Application {
         //Use in buttons
         TextArea finalModules = modules;
         viewBtn.setOnAction(e ->{
-        TCPClient_23355433 tcp = new TCPClient_23355433();
+            TCPClient_23355433 tcp = new TCPClient_23355433();
         tcp.run();
-        String response = tcp.send("VIEW_"+module.getText());
+        String response = tcp.send("DISPLAY_" + module.getText()); // Get schedule data
         tcp.close();
-        String content = finalModules.getText(); // Get the content of the TextArea
-        finalModules.setText("Lecture: " + result); // Set the label text to the content
-        });
+        
+
+    if (response == null || response.isEmpty()) {
+        result.setText("No lectures found.");
+        return;
+    }
+
+    
+
+    
+    // Parse response from server
+    String[] lectures = response.split("/");
+
+    for (String lecture : lectures) {
+        String[] details = lecture.split("_");
+        if (details.length != 4) continue; // Ignore invalid data
+
+        String moduleCode = details[0];
+        String room = details[1];
+        String fdate = details[2];
+        String time = details[3];
+
+        // Find correct column (weekday)
+        int colIndex = -1;
+        String[] dateParts = fdate.split("-");
+        String date= dateParts[2];
+        for (int i = 0; i < weekdays.length; i++) {
+            if (date.contains(weekdays[i].trim())) {
+                colIndex = i + 1; // +1 to skip the time column
+                break;
+            }
+        }
+
+        // Find correct row (time)
+        int rowIndex = -1;
+        for (int i = 0; i < moduleTime.length; i++) {
+            if (moduleTime[i].equals(time)) {
+                rowIndex = i + 1; // +1 to skip header
+                break;
+            }
+        }
+
+        // If valid column and row found, place the lecture
+        if (colIndex != -1 && rowIndex != -1) {
+            TextArea cell = new TextArea(moduleCode + "\n" + room);
+            cell.setEditable(false);
+            cell.setMinSize(100, 100);
+            cell.setMaxSize(100, 100);
+            scheduleGrid.add(cell, colIndex, rowIndex);
+        }
+    }
+});
         homeBtn.setOnAction(e -> stage.setScene(homeMenu()));
 
 // ----------------------- LAYOUT -----------------------
