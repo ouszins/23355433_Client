@@ -226,5 +226,5 @@ public class serverApp extends Application {
     //launcher
     public static void main(String[] args) {
         launch();
-    }
+    } //launches the app
 }
