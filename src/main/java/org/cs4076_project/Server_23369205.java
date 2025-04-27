@@ -4,33 +4,29 @@ import java.io.*;
 import java.net.*;
 
 public class Server_23369205 {
-    
-    private static final int port = 1234;
-    
+
+    private static final int PORT = 1234;
 
     public static void main(String[] args) {
-        ServerSocket socket = null;
-        
-        try {
-            socket = new ServerSocket(port);
-            System.out.println("Server is waiting for connection from client");
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            System.out.println("Server is running and waiting for connections...");
 
-                while(true){
-                Socket clientSocket = socket.accept();
-                System.out.println("Client connected from " + clientSocket.getInetAddress());
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("New client connected: " + clientSocket.getInetAddress());
+
+
                 ClientHandler clientHandler = new ClientHandler(clientSocket);
-                new Thread(clientHandler).start();
-                }
-                
-                
-            
-        } 
+                Thread thread = new Thread(clientHandler);
+                thread.start();
+            }
+        }
         catch (IOException e) {
             System.out.println("IOException occurred: " + e.getMessage());
         }
-        
-       
-    }    
-  }
 
-    
+    }
+}
+
+
+

@@ -25,6 +25,14 @@ public class ClientHandler implements Runnable {
             }
         } catch (IOException e) {
             System.out.println("Client connection error: " + e.getMessage());
+        }finally {
+            try {
+                if (in != null) in.close();
+                if (out != null) out.close();
+                if (clientSocket != null && !clientSocket.isClosed()) clientSocket.close();
+            } catch (IOException ex) {
+                System.out.println("Error closing: " + ex.getMessage());
+            }
         }
     }
 }
