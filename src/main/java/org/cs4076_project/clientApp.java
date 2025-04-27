@@ -20,7 +20,7 @@ import javafx.stage.*;
 public class clientApp extends Application {
     private Stage stage;
     private GridPane scheduleGrid;
-    private String[] weekdays = {" Monday", " Tuesday", "Wednesday", " Thursday", "  Friday"};
+    private String[] weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
     private String[] moduleTime = {"9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"};
 
     final int minWidth = 800;
@@ -123,11 +123,11 @@ public class clientApp extends Application {
             tcp.run();
             String input = module.getText() + "_" + room.getText() + "_" + date.getValue().toString() + "_" + time.getValue();
 
-                popText.setText(tcp.send("ADD_" + input));
-                tcp.close();
-                popup.show(stage);
-                
-            
+            popText.setText(tcp.send("ADD_" + input));
+            tcp.close();
+            popup.show(stage);
+
+
         });
 
         Button removeClass = new Button("Remove Class");
@@ -136,10 +136,10 @@ public class clientApp extends Application {
             TCPClient_23355433 tcp = new TCPClient_23355433();
             tcp.run();
             String input = module.getText() + "_" + room.getText() + "_" + date.getValue().toString() + "_" + time.getValue();
-            
-                popText.setText(tcp.send("REMOVE_" + input));
-                tcp.close();
-                popup.show(stage);
+
+            popText.setText(tcp.send("REMOVE_" + input));
+            tcp.close();
+            popup.show(stage);
         });
 
         Button homeBtn = new Button("Home");
@@ -268,6 +268,8 @@ public class clientApp extends Application {
                 }else if (day>7){
                     day=day-7;
                 }
+
+                day++;
 
                 int colIndex = day ;
 
