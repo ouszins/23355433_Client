@@ -81,7 +81,6 @@ public class scheduleOperations {
 
         }
         if (tempDayLectures.isEmpty()) {
-            System.out.println(day +"dwmp");
             return "No lectures to shift.";
         }
 
@@ -101,7 +100,6 @@ public class scheduleOperations {
                 // If early timeslot is free
                 if (!courseSchedule.containsKey(newKey)) {
                     // Move lecture
-                    System.out.println("new");
                     courseSchedule.remove(oldKey);
                     courseSchedule.put(newKey, moduleCode);
                     moved = true;
