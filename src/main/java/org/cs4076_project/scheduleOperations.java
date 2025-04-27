@@ -4,6 +4,7 @@
  */
 package org.cs4076_project;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -11,7 +12,8 @@ import java.util.HashMap;
  */
 public class scheduleOperations {
 
-    private static HashMap<String, String> courseSchedule = new HashMap<>();
+    private static ConcurrentHashMap<String, String> courseSchedule = new ConcurrentHashMap<>();
+
 
     static String addLecture(String moduleCode, String scheduleKey) {
         if (courseSchedule.containsKey(scheduleKey)) {
@@ -45,39 +47,41 @@ public class scheduleOperations {
 
 
     static String moveLecturesEarlier() {
-        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+        int[] days = {0,1,2,3,4};
         Thread[] threads = new Thread[days.length];
 
         for (int i = 0; i < days.length; i++) {
-            String day = days[i];
+            int day = days[i];
 
             threads[i] = new Thread(() -> shiftDayLectures(day));
             threads[i].start();
-        }
-
-        for (Thread t : threads) {
             try {
-                t.join();
+                threads[i].join();
             } catch (InterruptedException e) {
-                System.out.println( e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
 
         return "Moved lectures to earlier slots.";
     }
 
-    static  synchronized String shiftDayLectures(String day) {
+    static  synchronized String shiftDayLectures(int day) {
         String[] earlySlots = {"9", "10", "11", "12", "13", "14", "15", "16", "17"};
 
         HashMap<String, String> tempDayLectures = new HashMap<>();
-
+        int dayShifted = day + 1;
         for (String key : courseSchedule.keySet()) {
-            if (key.contains(day)) {
-                tempDayLectures.put(key, courseSchedule.get(key));
+            String[] parts = key.split("_");
+            String[] partsDate = parts[2].split("-");
+            int dayPart = Integer.parseInt(parts[2]);
 
+            if (dayPart == dayShifted || dayPart == dayShifted+7 || dayPart == dayShifted+14 || dayPart == dayShifted+21 || dayPart == dayShifted+28) {
+                tempDayLectures.put(key, courseSchedule.get(key));
             }
+
         }
         if (tempDayLectures.isEmpty()) {
+            System.out.println(day +"dwmp");
             return "No lectures to shift.";
         }
 
@@ -89,14 +93,18 @@ public class scheduleOperations {
             String room = parts[0];
             String dayPart = parts[1];
 
+            boolean moved = false;
+
             for (String earlySlot : earlySlots) {
                 String newKey = room + "_" + dayPart + "_" + earlySlot;
 
                 // If early timeslot is free
                 if (!courseSchedule.containsKey(newKey)) {
                     // Move lecture
+                    System.out.println("new");
                     courseSchedule.remove(oldKey);
                     courseSchedule.put(newKey, moduleCode);
+                    moved = true;
                     break;
                 }
             }
