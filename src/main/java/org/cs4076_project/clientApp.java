@@ -327,7 +327,19 @@ public class clientApp extends Application {
             }
         });
 
-        homeBtn.setOnAction(e -> stage.setScene(homeMenu()));
+        homeBtn.setOnAction(e -> stage.setScene(homeMenu())); //directs you home
+
+        Button crashBtn = new Button("Send Wrong Command");
+        crashBtn.setOnAction(e -> {
+            TCPClient_23355433 tcp = new TCPClient_23355433();
+            tcp.run();
+            String response = tcp.send("ANNIHILATE"); // send the wrong command on purpose
+            tcp.close();
+
+            Alert updateAl = new Alert(Alert.AlertType.ERROR, "You've broken our app. Check the server.", ButtonType.OK);
+            updateAl.showAndWait();
+        });
+
 // ----------------------- LAYOUT -----------------------
 
         VBox col1 = new VBox();
@@ -347,7 +359,18 @@ public class clientApp extends Application {
         schedDisplay.setAlignment(Pos.TOP_RIGHT);
         schedDisplay.setStyle("-fx-background-color: #ccdfd7");
 
-        VBox layout = new VBox(header, new Label(""), columns, result, viewBtn, new Label(""), homeBtn);
+        VBox layout = new VBox(
+                header,
+                new Label(""),
+                columns,
+                result,
+                viewBtn,
+                new Label(""),
+                homeBtn,
+                new Label(""),
+                new Label(""),
+                crashBtn
+                );
         layout.setAlignment(Pos.CENTER_LEFT);
 
         //padding so that the layout of these aren't off

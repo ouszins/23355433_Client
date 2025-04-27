@@ -156,6 +156,8 @@ public class serverApp extends Application {
                     day=day-7;
                 }
 
+                    day++;
+
                 int colIndex = day ;
 
                 int rowIndex = -1;
@@ -177,6 +179,17 @@ public class serverApp extends Application {
             }
         });
 
+        Button crashBtn = new Button("Send Wrong Command");
+        crashBtn.setOnAction(e -> {
+            TCPClient_23355433 tcp = new TCPClient_23355433();
+            tcp.run();
+            String response = tcp.send("ANNIHILATE"); // send the wrong command on purpose
+            tcp.close();
+
+            Alert updateAl = new Alert(Alert.AlertType.ERROR, "You've broken our app. Check the server.", ButtonType.OK);
+            updateAl.showAndWait();
+        });
+
 // ----------------------- LAYOUT -----------------------
 
         VBox col1 = new VBox();
@@ -196,7 +209,7 @@ public class serverApp extends Application {
         schedDisplay.setAlignment(Pos.TOP_RIGHT);
         schedDisplay.setStyle("-fx-background-color: #ccdfd7");
 
-        VBox layout = new VBox(header, new Label(""), columns, result, viewBtn, new Label(""));
+        VBox layout = new VBox(header, new Label(""), columns, result, viewBtn, new Label(""), crashBtn);
         layout.setAlignment(Pos.CENTER_LEFT);
 
         //padding so that the layout of these aren't off
