@@ -67,7 +67,7 @@ public class scheduleOperations {
     }
 
     static String shiftDayLectures(String day) {
-        String[] earlySlots = {"9:00", "10:00", "11:00", "12:00", "13:00","14:00","15:00","16:00","17:00"};
+        String[] earlySlots = {"9:00", "10:00", "11:00", "12:00", "13:00","14:00","15:00"};
 
         HashMap<String, String> tempDayLectures = new HashMap<>();
 
@@ -98,7 +98,7 @@ public class scheduleOperations {
                     // Move lecture
                     courseSchedule.remove(oldKey);
                     courseSchedule.put(newKey, moduleCode);
-
+                    break;
                 }
             }
         }

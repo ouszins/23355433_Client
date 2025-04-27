@@ -180,8 +180,66 @@ public class clientApp extends Application {
         earlyLectures.setOnAction(e -> {
             TCPClient_23355433 tcp = new TCPClient_23355433();
             tcp.run();
-            String response = tcp.send("EARLY_" + earlyLectures.getText()); // Get schedule data
+            String response = tcp.send("EARLY" + earlyLectures.getText()); // Get schedule data
             tcp.close();
+
+            Alert updateAl = new Alert(Alert.AlertType.NONE, "Lectures have been automatically pushed up to an earlier time.", ButtonType.OK);
+            updateAl.showAndWait();
+
+            //if lecture is between 11:00 – 13:00, 13:00 –15:00, and 15:00 – 17:00
+            // that lect
+
+            if (response == null || response.isEmpty()) {
+                Alert notHere = new Alert(Alert.AlertType.ERROR, "No Lectures adjusted!", ButtonType.OK);
+                notHere.showAndWait();
+                return;
+            }
+
+            // Parse response from server
+            String[] lectures = response.split("/");
+
+            for (String lecture : lectures) {
+                String[] details = lecture.split("_");
+
+
+                String moduleCode = details[0];
+                String room = details[1];
+                String fdate = details[2];
+                String time = details[3]+":00";
+                String[] dateParts = fdate.split("-");
+                int day= Integer.valueOf(dateParts[2]);
+
+                if(day>28){
+                    day=day-28;
+                } else if (day>21){
+                    day=day-21;
+                }else if (day>14){
+                    day=day-14;
+                }else if (day>7){
+                    day=day-7;
+                }
+
+                day++;
+
+                int colIndex = day ;
+
+                int rowIndex = -1;
+                for (int i = 0; i < moduleTime.length; i++) {
+                    if (moduleTime[i].equals(time)) {
+                        rowIndex = i + 1;
+                        break;
+                    }
+                }
+
+
+                if (colIndex != -1 && rowIndex != -1) {
+                    TextArea cell = new TextArea(moduleCode + "\n" + room);
+                    cell.setEditable(false);
+                    cell.setMinSize(100, 100);
+                    cell.setMaxSize(100, 100);
+                    scheduleGrid.add(cell, colIndex, rowIndex);
+                }
+            }
         });
 
         earlyLectures.setMinWidth(200);
@@ -268,8 +326,6 @@ public class clientApp extends Application {
                 }else if (day>7){
                     day=day-7;
                 }
-
-                day++;
 
                 int colIndex = day ;
 
