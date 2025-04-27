@@ -43,7 +43,30 @@ public class scheduleOperations {
         return schedule.toString();
     }
 
-    static String moveLecturesEarlier(String day) {
+
+    static String moveLecturesEarlier() {
+        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+        Thread[] threads = new Thread[days.length];
+
+        for (int i = 0; i < days.length; i++) {
+            String day = days[i];
+
+            threads[i] = new Thread(() -> shiftDayLectures(day));
+            threads[i].start();
+        }
+
+        for (Thread t : threads) {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                System.out.println( e.getMessage());
+            }
+        }
+
+        return "Moved lectures to earlier slots.";
+    }
+
+    static String shiftDayLectures(String day) {
         String[] earlySlots = {"9:00", "10:00", "11:00", "12:00", "13:00","14:00","15:00","16:00","17:00"};
 
         HashMap<String, String> tempDayLectures = new HashMap<>();
@@ -58,7 +81,7 @@ public class scheduleOperations {
             return "No lectures to shift.";
         }
 
-        // Step 2: Try to move them to early slots
+        //  Try to move them to early slots
         for (String oldKey : tempDayLectures.keySet()) {
             String moduleCode = tempDayLectures.get(oldKey);
             String[] parts = oldKey.split("_"); // Room_Day_Time
@@ -81,6 +104,5 @@ public class scheduleOperations {
         }
         return "Attempted to move lectures to earlier slots.";
     }
-
 
 }
