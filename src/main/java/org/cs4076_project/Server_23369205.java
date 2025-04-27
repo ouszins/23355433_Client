@@ -3,7 +3,7 @@ package org.cs4076_project;
 import java.io.*;
 import java.net.*;
 
-public class Server_23369205_23355433 {
+public class Server_23369205 {
 
     private static final int PORT = 1234;
 
