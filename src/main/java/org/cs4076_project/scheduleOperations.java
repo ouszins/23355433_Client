@@ -66,8 +66,8 @@ public class scheduleOperations {
         return "Moved lectures to earlier slots.";
     }
 
-    static String shiftDayLectures(String day) {
-        String[] earlySlots = {"9:00", "10:00", "11:00", "12:00", "13:00","14:00","15:00"};
+    static  synchronized String shiftDayLectures(String day) {
+        String[] earlySlots = {"9", "10", "11", "12", "13", "14", "15", "16", "17"};
 
         HashMap<String, String> tempDayLectures = new HashMap<>();
 
@@ -89,7 +89,6 @@ public class scheduleOperations {
             String room = parts[0];
             String dayPart = parts[1];
 
-            // Try moving to an earlier slot
             for (String earlySlot : earlySlots) {
                 String newKey = room + "_" + dayPart + "_" + earlySlot;
 
