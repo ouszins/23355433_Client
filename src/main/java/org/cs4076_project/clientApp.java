@@ -269,7 +269,7 @@ public class clientApp extends Application {
                     day=day-7;
                 }
 
-                day++
+                day++;
 
                 int colIndex = day ;
 
