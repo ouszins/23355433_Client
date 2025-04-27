@@ -55,9 +55,9 @@ public class serverApp extends Application {
         Label header = new Label("View Schedule");
         header.setFont(Font.font("comic sans ms", FontWeight.EXTRA_BOLD, 20));
 
-        Button module = new Button("Refresh");
+        Button earlyLectures = new Button("Push Lectures Early");
 
-        module.setMinWidth(200);
+        earlyLectures.setMinWidth(200);
 
         //creating schedule fields for the 5 working days, Mon-Fri
 
@@ -98,13 +98,14 @@ public class serverApp extends Application {
 
         //Buttons
         Button viewBtn = new Button("View Schedule");
+        viewBtn.setMinWidth(200);
 
         //Use in buttons
         TextArea finalModules = modules;
         viewBtn.setOnAction(e ->{
             TCPClient_23355433 tcp = new TCPClient_23355433();
             tcp.run();
-            String response = tcp.send("DISPLAY_" + module.getText()); // Get schedule data
+            String response = tcp.send("DISPLAY_" + earlyLectures.getText()); // Get schedule data
             tcp.close();
 
             Alert updateAl = new Alert(Alert.AlertType.NONE, "Lectures have been updated", ButtonType.OK);
@@ -163,14 +164,14 @@ public class serverApp extends Application {
 // ----------------------- LAYOUT -----------------------
 
         VBox col1 = new VBox();
-        col1.setSpacing(5);
+        col1.setSpacing(0);
 
-        VBox col2 = new VBox(module);
-        col2.setSpacing(2);
+        VBox col2 = new VBox(earlyLectures);
+        col2.setSpacing(0);
 
         HBox columns = new HBox(col1, col2);
-        columns.setSpacing(10);
-        columns.setPadding(new Insets(0, 5, 0, 5));
+        columns.setSpacing(0);
+        columns.setPadding(new Insets(0, 10, 0, 0));
 
         spacer.prefHeight(5);
         scheduleGrid.setStyle("-fx-background-color: #658e65");
@@ -183,8 +184,8 @@ public class serverApp extends Application {
         layout.setAlignment(Pos.CENTER_LEFT);
 
         //padding so that the layout of these aren't off
-        scheduleGrid.setPadding(new Insets(5, 10, 50, 10));
-        layout.setPadding(new Insets(5, 5, 5, 5));
+        scheduleGrid.setPadding(new Insets(5, 10, 50, 35));
+        layout.setPadding(new Insets(5, 0, 5, 10));
 
         HBox sides = new HBox(layout, schedDisplay);
         sides.setStyle("-fx-background-color: #658e65;");

@@ -175,9 +175,9 @@ public class clientApp extends Application {
         Label header = new Label("View Schedule");
         header.setFont(Font.font("comic sans ms", FontWeight.EXTRA_BOLD, 20));
 
-        Button module = new Button("Refresh");
+        Button earlyLectures = new Button("Push Lectures Early");
 
-        module.setMinWidth(200);
+        earlyLectures.setMinWidth(200);
 
         //creating schedule fields for the 5 working days, Mon-Fri
 
@@ -218,80 +218,83 @@ public class clientApp extends Application {
 
         //Buttons
         Button viewBtn = new Button("View Schedule");
+        viewBtn.setMinWidth(200);
         Button homeBtn = new Button("Home");
-        Button refreshBtn = new Button("Refresh");
 
         //Use in buttons
         TextArea finalModules = modules;
         viewBtn.setOnAction(e ->{
             TCPClient_23355433 tcp = new TCPClient_23355433();
-        tcp.run();
-        String response = tcp.send("DISPLAY_" + module.getText()); // Get schedule data
-        tcp.close();
+            tcp.run();
+            String response = tcp.send("DISPLAY_" + earlyLectures.getText()); // Get schedule data
+            tcp.close();
 
+            Alert updateAl = new Alert(Alert.AlertType.NONE, "Lectures have been updated", ButtonType.OK);
+            updateAl.showAndWait();
 
-    if (response == null || response.isEmpty()) {
-        result.setText("No lectures found.");
-        return;
-    }
-
-    // Parse response from server
-    String[] lectures = response.split("/");
-
-    for (String lecture : lectures) {
-        String[] details = lecture.split("_");
-       
-
-        String moduleCode = details[0];
-        String room = details[1];
-        String fdate = details[2];
-        String time = details[3]+":00";
-        String[] dateParts = fdate.split("-");
-        int day= Integer.valueOf(dateParts[2]);
-        
-        if(day>28){
-            day=day-28;
-        } else if (day>21){
-            day=day-21;
-        }else if (day>14){
-            day=day-14;
-        }else if (day>7){
-            day=day-7;
-        }
-        
-        int colIndex = day ;
-      
-        int rowIndex = -1;
-        for (int i = 0; i < moduleTime.length; i++) {
-            if (moduleTime[i].equals(time)) {
-                rowIndex = i + 1; 
-                break;
+            if (response == null || response.isEmpty()) {
+                Alert notHere = new Alert(Alert.AlertType.ERROR, "No Lectures here !", ButtonType.OK);
+                notHere.showAndWait();
+                return;
             }
-        }
 
-       
-        if (colIndex != -1 && rowIndex != -1) {
-            TextArea cell = new TextArea(moduleCode + "\n" + room);
-            cell.setEditable(false);
-            cell.setMinSize(100, 100);
-            cell.setMaxSize(100, 100);
-            scheduleGrid.add(cell, colIndex, rowIndex);
-        }
-    }
-});
+            // Parse response from server
+            String[] lectures = response.split("/");
+
+            for (String lecture : lectures) {
+                String[] details = lecture.split("_");
+
+
+                String moduleCode = details[0];
+                String room = details[1];
+                String fdate = details[2];
+                String time = details[3]+":00";
+                String[] dateParts = fdate.split("-");
+                int day= Integer.valueOf(dateParts[2]);
+
+                if(day>28){
+                    day=day-28;
+                } else if (day>21){
+                    day=day-21;
+                }else if (day>14){
+                    day=day-14;
+                }else if (day>7){
+                    day=day-7;
+                }
+
+                int colIndex = day ;
+
+                int rowIndex = -1;
+                for (int i = 0; i < moduleTime.length; i++) {
+                    if (moduleTime[i].equals(time)) {
+                        rowIndex = i + 1;
+                        break;
+                    }
+                }
+
+
+                if (colIndex != -1 && rowIndex != -1) {
+                    TextArea cell = new TextArea(moduleCode + "\n" + room);
+                    cell.setEditable(false);
+                    cell.setMinSize(100, 100);
+                    cell.setMaxSize(100, 100);
+                    scheduleGrid.add(cell, colIndex, rowIndex);
+                }
+            }
+        });
+
         homeBtn.setOnAction(e -> stage.setScene(homeMenu()));
-
 // ----------------------- LAYOUT -----------------------
 
         VBox col1 = new VBox();
-        col1.setSpacing(5);
+        col1.setSpacing(0);
 
-        VBox col2 = new VBox(module);
-        col2.setSpacing(2);
+        VBox col2 = new VBox(earlyLectures);
+        col2.setSpacing(0);
 
         HBox columns = new HBox(col1, col2);
-        columns.setSpacing(10);
-        columns.setPadding(new Insets(0, 5, 0, 5));
+        columns.setSpacing(0);
+        columns.setPadding(new Insets(0, 10, 0, 0));
 
         spacer.prefHeight(5);
         scheduleGrid.setStyle("-fx-background-color: #658e65");
@@ -300,12 +303,12 @@ public class clientApp extends Application {
         schedDisplay.setAlignment(Pos.TOP_RIGHT);
         schedDisplay.setStyle("-fx-background-color: #ccdfd7");
 
-        VBox layout = new VBox(header, new Label(""), columns, result, viewBtn, new Label(""), homeBtn);
+        VBox layout = new VBox(header, new Label(""), columns, result, viewBtn, new Label(""));
         layout.setAlignment(Pos.CENTER_LEFT);
 
         //padding so that the layout of these aren't off
-        scheduleGrid.setPadding(new Insets(5, 10, 50, 10));
-        layout.setPadding(new Insets(5, 5, 5, 5));
+        scheduleGrid.setPadding(new Insets(5, 10, 50, 35));
+        layout.setPadding(new Insets(5, 0, 5, 10));
 
         HBox sides = new HBox(layout, schedDisplay);
         sides.setStyle("-fx-background-color: #658e65;");
