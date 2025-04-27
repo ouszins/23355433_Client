@@ -269,6 +269,8 @@ public class clientApp extends Application {
                     day=day-7;
                 }
 
+                day++
+
                 int colIndex = day ;
 
                 int rowIndex = -1;
