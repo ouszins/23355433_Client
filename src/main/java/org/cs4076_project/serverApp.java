@@ -61,7 +61,7 @@ public class serverApp extends Application {
         earlyLectures.setOnAction(e -> {
             TCPClient_23355433 tcp = new TCPClient_23355433();
             tcp.run();
-            String response = tcp.send("EARLY" + earlyLectures.getText()); // Get schedule data
+            String response = tcp.send("EARLY"); // Get schedule data
             tcp.close();
 
             Alert updateAl = new Alert(Alert.AlertType.NONE, "Lectures have been automatically pushed up to an earlier time.", ButtonType.OK);

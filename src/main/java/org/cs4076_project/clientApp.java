@@ -305,7 +305,9 @@ public class clientApp extends Application {
                 }else if (day>7){
                     day=day-7;
                 }
+
                 day++;
+
                 int colIndex = day ;
 
                 int rowIndex = -1;
