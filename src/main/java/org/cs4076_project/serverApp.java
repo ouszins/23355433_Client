@@ -72,52 +72,6 @@ public class serverApp extends Application {
                 notHere.showAndWait();
                 return;
             }
-
-            // Parse response from server
-            String[] lectures = response.split("/");
-
-            for (String lecture : lectures) {
-                String[] details = lecture.split("_");
-
-
-                String moduleCode = details[0];
-                String room = details[1];
-                String fdate = details[2];
-                String time = details[3]+":00";
-                String[] dateParts = fdate.split("-");
-                int day= Integer.valueOf(dateParts[2]);
-
-                if(day>28){
-                    day=day-28;
-                } else if (day>21){
-                    day=day-21;
-                }else if (day>14){
-                    day=day-14;
-                }else if (day>7){
-                    day=day-7;
-                }
-
-                day++;
-
-                int colIndex = day ;
-
-                int rowIndex = -1;
-                for (int i = 0; i < moduleTime.length; i++) {
-                    if (moduleTime[i].equals(time)) {
-                        rowIndex = i + 1;
-                        break;
-                    }
-                }
-
-
-                if (colIndex != -1 && rowIndex != -1) {
-                    TextArea cell = new TextArea(moduleCode + "\n" + room);
-                    cell.setEditable(false);
-                    cell.setMinSize(100, 100);
-                    cell.setMaxSize(100, 100);
-                    scheduleGrid.add(cell, colIndex, rowIndex);
-                }
-            }
         });
 
         //creating schedule fields for the 5 working days, Mon-Fri
