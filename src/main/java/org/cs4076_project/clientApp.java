@@ -303,7 +303,7 @@ public class clientApp extends Application {
         schedDisplay.setAlignment(Pos.TOP_RIGHT);
         schedDisplay.setStyle("-fx-background-color: #ccdfd7");
 
-        VBox layout = new VBox(header, new Label(""), columns, result, viewBtn, new Label(""));
+        VBox layout = new VBox(header, new Label(""), columns, result, viewBtn, new Label(""), homeBtn);
         layout.setAlignment(Pos.CENTER_LEFT);
 
         //padding so that the layout of these aren't off
