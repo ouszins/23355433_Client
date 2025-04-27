@@ -17,7 +17,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.*;
 
 
-public class App extends Application {
+public class clientApp extends Application {
     private Stage stage;
     private GridPane scheduleGrid;
     private String[] weekdays = {" Monday", " Tuesday", "Wednesday", " Thursday", "  Friday"};
@@ -175,10 +175,9 @@ public class App extends Application {
         Label header = new Label("View Schedule");
         header.setFont(Font.font("comic sans ms", FontWeight.EXTRA_BOLD, 20));
 
-        TextField module = new TextField();
+        Button module = new Button("Refresh");
 
         module.setMinWidth(200);
-        module.setPromptText("e.g., CSXXXX");
 
         //creating schedule fields for the 5 working days, Mon-Fri
 
@@ -220,6 +219,7 @@ public class App extends Application {
         //Buttons
         Button viewBtn = new Button("View Schedule");
         Button homeBtn = new Button("Home");
+        Button refreshBtn = new Button("Refresh");
 
         //Use in buttons
         TextArea finalModules = modules;
@@ -228,16 +228,13 @@ public class App extends Application {
         tcp.run();
         String response = tcp.send("DISPLAY_" + module.getText()); // Get schedule data
         tcp.close();
-        
+
 
     if (response == null || response.isEmpty()) {
         result.setText("No lectures found.");
         return;
     }
 
-    
-
-    
     // Parse response from server
     String[] lectures = response.split("/");
 
@@ -286,7 +283,7 @@ public class App extends Application {
 
 // ----------------------- LAYOUT -----------------------
 
-        VBox col1 = new VBox(new Label("Module Code:"), new Label(""));
+        VBox col1 = new VBox();
         col1.setSpacing(5);
 
         VBox col2 = new VBox(module);
