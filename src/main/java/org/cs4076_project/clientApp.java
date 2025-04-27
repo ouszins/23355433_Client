@@ -1,3 +1,4 @@
+
 package org.cs4076_project;
 
 import java.util.ArrayList;
@@ -242,8 +243,35 @@ public class clientApp extends Application {
         viewBtn.setOnAction(e ->{
             TCPClient_23355433 tcp = new TCPClient_23355433();
             tcp.run();
-            String response = tcp.send("DISPLAY_" + earlyLectures.getText()); // Get schedule data
+            String response = tcp.send("DISPLAY"); // Get schedule data
             tcp.close();
+
+            scheduleGrid.getChildren().clear();
+                    //loop for inserting the weekdays
+                    for (int col = 0; col < weekdays.length; col++) {
+                        Label weekday = new Label(weekdays[col]);
+                        weekday.setFont(Font.font("comic sans ms", FontWeight.BOLD, 17));
+                        weekday.setPadding(new Insets(0,0,10,5));
+                        weekday.setMaxWidth(200);
+                        scheduleGrid.add(weekday, col + 1, 0);
+                    }
+
+
+                    for (int row = 0; row < moduleTime.length; row++) {
+                        Label times = new Label(moduleTime[row]);
+                        times.setStyle("-fx-font-size: 15");
+                        times.setRotate(90);
+                        scheduleGrid.add(times, 0, row + 1);
+                    }
+                    for (int row = 0; row < moduleTime.length; row++) {
+                        for (int col = 0; col < weekdays.length; col++) {
+                            TextArea emptyCell = new TextArea();
+                            emptyCell.setEditable(false);
+                            emptyCell.setMinSize(100, 100);
+                            emptyCell.setMaxSize(100, 100);
+                            scheduleGrid.add(emptyCell, col + 1, row + 1);
+                        }
+                    }
 
             Alert updateAl = new Alert(Alert.AlertType.NONE, "Lectures have been updated", ButtonType.OK);
             updateAl.showAndWait();
@@ -277,7 +305,7 @@ public class clientApp extends Application {
                 }else if (day>7){
                     day=day-7;
                 }
-
+                day++;
                 int colIndex = day ;
 
                 int rowIndex = -1;
