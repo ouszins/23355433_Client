@@ -177,6 +177,13 @@ public class clientApp extends Application {
 
         Button earlyLectures = new Button("Push Lectures Early");
 
+        earlyLectures.setOnAction(e -> {
+            TCPClient_23355433 tcp = new TCPClient_23355433();
+            tcp.run();
+            String response = tcp.send("EARLY_" + earlyLectures.getText()); // Get schedule data
+            tcp.close();
+        });
+
         earlyLectures.setMinWidth(200);
 
         //creating schedule fields for the 5 working days, Mon-Fri
