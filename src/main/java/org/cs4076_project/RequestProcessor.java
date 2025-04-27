@@ -35,7 +35,7 @@ public class RequestProcessor {
                 return scheduleOperations.displaySchedule();
 
             case "EARLY":
-                String day = parts[2];
+
                 return scheduleOperations.moveLecturesEarlier();
 
             default:
