@@ -25,10 +25,10 @@ public class serverApp extends Application {
     private Stage stage;
     private GridPane scheduleGrid;
     private String[] weekdays = {" Monday", " Tuesday", "Wednesday", " Thursday", "  Friday"};
-    private String[] moduleTime = {"9:00", "10:00", "11:00", "12:00", "13:00"};
+    private String[] moduleTime = {"9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"};
 
     final int minWidth = 800;
-    final int minHeight = 600;
+    final int minHeight = 1050;
     public String moduleString;
     public String dateString;
     Region spacer = new Region();
@@ -56,8 +56,14 @@ public class serverApp extends Application {
         header.setFont(Font.font("comic sans ms", FontWeight.EXTRA_BOLD, 20));
 
         Button earlyLectures = new Button("Push Lectures Early");
-
         earlyLectures.setMinWidth(200);
+
+        earlyLectures.setOnAction(e -> {
+            TCPClient_23355433 tcp = new TCPClient_23355433();
+            tcp.run();
+            String response = tcp.send("EARLY_" + earlyLectures.getText()); // Get schedule data
+            tcp.close();
+        });
 
         //creating schedule fields for the 5 working days, Mon-Fri
 
@@ -161,6 +167,7 @@ public class serverApp extends Application {
                 }
             }
         });
+
 // ----------------------- LAYOUT -----------------------
 
         VBox col1 = new VBox();
