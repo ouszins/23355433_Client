@@ -18,7 +18,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.*;
 
 
-public class clientApp_23369205_23355433 extends Application {
+public class clientApp extends Application {
     private Stage stage;
     private GridPane scheduleGrid;
     private String[] weekdays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
